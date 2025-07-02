@@ -6,16 +6,19 @@
   <title>Stressmuster Test</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Arial', sans-serif;
       background-color: #f1f0ed;
       color: #333;
       max-width: 800px;
       margin: 0 auto;
       padding: 20px;
+      line-height: 1.6;
     }
 
     h1 {
-      color: #567d64;
+      color: #3b8c84; /* Petrolfarbe */
+      text-align: center;
+      font-size: 1.8em;
     }
 
     .question {
@@ -25,28 +28,35 @@
     label {
       display: block;
       margin-bottom: 5px;
+      font-weight: bold;
     }
 
-    select {
+    select, input[type="text"], input[type="email"] {
       width: 100%;
-      padding: 5px;
+      padding: 8px;
+      margin-top: 4px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
     }
 
     .input-field {
-      margin-bottom: 15px;
+      margin-bottom: 20px;
     }
 
     button {
-      background-color: #567d64;
+      background-color: #3b8c84;
       color: white;
-      padding: 10px 20px;
+      padding: 12px 24px;
       border: none;
       border-radius: 8px;
+      font-size: 1em;
       cursor: pointer;
+      margin-top: 20px;
     }
 
     button:hover {
-      background-color: #456b52;
+      background-color: #346f68;
     }
 
     .result {
@@ -58,6 +68,15 @@
 <body>
   <h1>Stressmuster Test</h1>
   <form id="stressTestForm">
+    <div class="input-field">
+      <label for="anrede">Anrede</label>
+      <select id="anrede" name="anrede" required>
+        <option value="">-- bitte auswählen --</option>
+        <option value="Frau">Frau</option>
+        <option value="Herr">Herr</option>
+        <option value="Divers">Divers</option>
+      </select>
+    </div>
     <div class="input-field">
       <label for="vorname">Vorname</label>
       <input type="text" id="vorname" name="vorname" required />
@@ -76,111 +95,4 @@
     <button type="submit">Absenden und Ergebnis erhalten</button>
   </form>
 
-  <div id="result" class="result"></div>
-
-  <script>
-    const questions = [
-      "Wenn ich eine Arbeit mache, dann mache ich sie gründlich.",
-      "Ich fühle mich dafür verantwortlich, dass sich Menschen, die mit mir umgehen, wohlfühlen.",
-      "Ich bin ständig auf Trab.",
-      "Anderen gegenüber zeige ich meine Schwächen nicht gerne.",
-      "Wenn ich raste, dann roste ich.",
-      "Häufig sage ich etwas wie: 'Es ist schwierig, dies wirklich zu beschreiben.'",
-      "Ich sage oft mehr, als eigentlich nötig wäre.",
-      "Ich habe Mühe, Leute, die nicht genau sind, zu akzeptieren.",
-      "Es fällt mir schwer, Gefühle zu zeigen.",
-      "Nur nicht lockerlassen, ist meine Devise.",
-      "Wenn ich eine Meinung äußere, begründe ich sie auch.",
-      "Ich liefere einen Bericht erst ab, wenn ich ihn mehrere Male überarbeitet habe.",
-      "Leute, die 'herumtrödeln', regen mich auf.",
-      "Es ist für mich wichtig, von den anderen akzeptiert zu werden.",
-      "Ich habe eher eine harte Schale, aber einen weichen Kern.",
-      "Ich versuche oft zu spüren, was andere von mir erwarten.",
-      "Leute, die unbekümmert in den Tag hineinleben, kann ich nur schwer verstehen.",
-      "Ich löse meine Probleme selber.",
-      "Aufgaben erledige ich möglichst rasch.",
-      "Im Umgang mit anderen halte ich auf Distanz.",
-      "Ich sollte viele Aufgaben noch besser erledigen.",
-      "Ich kümmere mich persönlich auch um kleinere Details.",
-      "Erfolge fallen nicht vom Himmel. Ich muss sie hart erarbeiten.",
-      "Für unnötige Fehler habe ich kein Verständnis.",
-      "Ich schätze es, wenn andere auf meine Fragen rasch und knapp antworten.",
-      "Es ist mir wichtig, von anderen zu erfahren, ob ich meine Sache gut gemacht habe.",
-      "Ich stelle meine Wünsche zu Gunsten anderer zurück.",
-      "Ich glaube, dass die meisten Dinge nicht so einfach sind, wie viele Leute meinen.",
-      "Es ist mir unangenehm, andere Leute zu kritisieren.",
-      "Ich strenge mich an, meine Ziele zu erreichen.",
-      "Mein Gesichtsausdruck ist eher ernst.",
-      "Ich bin leicht nervös.",
-      "Meine Probleme gehen die anderen nicht an.",
-      "Ich sage oft: 'Macht mal vorwärts.'",
-      "Ich sage oft: 'Das verstehe ich nicht.'",
-      "Ich sage eher: 'Könnten Sie es mal versuchen?'",
-      "Ich bin diplomatisch.",
-      "Beim Telefonieren bearbeite ich nebenbei oft noch Akten.",
-      "'Auf die Zähne beißen', heißt meine Devise.",
-      "Trotz großer Anstrengung will mir vieles nicht gelingen."
-    ];
-
-    const driverMap = {
-      'Perfekt': [1,7,8,11,12,21,22,24],
-      'Sei gefällig': [2,14,16,26,27,29,36,37],
-      'Streng dich an': [6,10,17,23,28,30,35,40],
-      'Beeil dich': [3,5,13,19,25,32,34,38],
-      'Sei stark': [4,9,15,18,20,31,33,39]
-    };
-
-    const questionContainer = document.getElementById('questions');
-
-    questions.forEach((q, index) => {
-      const div = document.createElement('div');
-      div.classList.add('question');
-      div.innerHTML = `
-        <label for="q${index + 1}">${index + 1}) ${q}</label>
-        <select id="q${index + 1}" required>
-          <option value="">-- bitte auswählen --</option>
-          <option value="0">0 = gar nicht</option>
-          <option value="1">1 = kaum</option>
-          <option value="2">2 = etwas</option>
-          <option value="3">3 = ziemlich</option>
-          <option value="4">4 = voll</option>
-        </select>
-      `;
-      questionContainer.appendChild(div);
-    });
-
-    document.getElementById('stressTestForm').addEventListener('submit', function (e) {
-      e.preventDefault();
-
-      const results = {
-        'Perfekt': 0,
-        'Sei gefällig': 0,
-        'Streng dich an': 0,
-        'Beeil dich': 0,
-        'Sei stark': 0
-      };
-
-      for (let [driver, numbers] of Object.entries(driverMap)) {
-        numbers.forEach(n => {
-          const val = parseInt(document.getElementById(`q${n}`).value || 0);
-          results[driver] += val;
-        });
-      }
-
-      const name = document.getElementById('vorname').value;
-      const email = document.getElementById('email').value;
-
-      // Hier sendest du an deine Wix Automation (z. B. mit Fetch oder direkt in Wix-Form)
-      // Du kannst hier alternativ das Ergebnis anzeigen lassen:
-      document.getElementById('result').innerHTML =
-        `<p>Danke ${name}, dein Ergebnis wird dir gleich per E-Mail zugesendet.</p>`;
-
-      // Optional: senden an Backend oder externen Mailserver, hier aber Platzhalter
-      console.log("Send Email To Wix Automation →", { name, email, results });
-
-      // 🧠 Wichtig: Du kannst dieses Objekt an eine eigene Automatisierung übermitteln,
-      // etwa via POST an einen Webhook oder per verstecktem Formularfeld.
-    });
-  </script>
-</body>
-</html>
+  <div id="result" class="result"></
